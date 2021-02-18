@@ -5,8 +5,7 @@ lazy val root = (project in file("."))
     testSettings,
     assemblySettings,
     runLocalSettings,
-    name := "scala-spark-course",
-    Compile / mainClass := ???
+    name := "scala-spark-course"
   )
 
 // Libraries
@@ -26,7 +25,6 @@ val testingLibs = Seq(
 lazy val commonSettings = Seq(
   organization := "xyz.graphiq",
   scalaVersion := "2.12.13",
-  version := "0.1",
   libraryDependencies ++= sparkLibs ++ testingLibs,
   scalacOptions ++= Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -47,32 +45,30 @@ lazy val testSettings = Seq(
   Test / parallelExecution := false
 )
 
-// Package settings
+
+// Assembly options
 lazy val assemblySettings = Seq(
-  // Assembly options
   assembly / assemblyOption := (assembly / assemblyOption).value.copy(includeScala = false),
   assembly / assemblyOutputPath := baseDirectory.value / "../output" / (assembly / assemblyJarName).value,
   assembly / assemblyMergeStrategy := {
-    case PathList(ps @ _*) if ps.last.startsWith("application.") && ps.last.endsWith(".conf") =>
-      MergeStrategy.concat
-    case PathList(ps @ _*) if ps.last.endsWith(".yaml") || ps.last.endsWith(".properties") =>
-      MergeStrategy.first
     case PathList("META-INF", _ @_*) => MergeStrategy.discard
-    case PathList(ps @ _*) if ps.last.startsWith("LICENSE") || ps.last.startsWith("NOTICE") =>
-      MergeStrategy.discard
     case _ => MergeStrategy.first
   },
   assembly / logLevel := sbt.util.Level.Error,
   assembly / test := {},
-  pomIncludeRepository := { _ =>
-    false
-  }
+  pomIncludeRepository := { _ => false}
 )
 
 // Include "provided" dependencies back to default run task
-// https://stackoverflow.com/questions/18838944/how-to-add-provided-dependencies-back-to-run-test-tasks-classpath/21803413#21803413
 lazy val runLocalSettings = Seq(
   Compile / run := Defaults
+    .runTask(
+      fullClasspath in Compile,
+      mainClass in (Compile, run),
+      runner in (Compile, run)
+    )
+    .evaluated,
+  Compile / runMain := Defaults
     .runTask(
       fullClasspath in Compile,
       mainClass in (Compile, run),
