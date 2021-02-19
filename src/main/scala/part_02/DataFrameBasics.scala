@@ -28,7 +28,7 @@ object DataFrameBasics extends App{
 
 
   val rdd:RDD[Row]  = dataFrame.rdd
-  println(s"DataFrameBasics still contains an RDD of type Row with ${rdd.getNumPartitions} partitions")
+  println(s"DataFrameBasics still contains an RDDTest of type Row with ${rdd.getNumPartitions} partitions")
 
   val schemaFromCSV:StructType = dataFrame.schema
 

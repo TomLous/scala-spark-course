@@ -42,6 +42,31 @@ stream-stocks:
 unzip-data:
 	@unzip data.zip
 
+.PHONY: build-jar
+build-jar:
+	sbt assembly
+
+.PHONY: run-trainer
+run-trainer:
+	@logfile=`pwd`/src/main/resources/log4j.properties;\
+	spark-submit \
+			--conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file://$$logfile" \
+			--conf "spark.executor.extraJavaOptions=-Dlog4j.configuration=file://$$logfile" \
+			--class part_05.SparkModelTrainer \
+			output/scala-spark-course-assembly-0.1.0.jar \
+			data/stocks_for_streaming data/stocks_model
+
+
+.PHONY: run-predictor
+run-trainer:
+	@logfile=`pwd`/src/main/resources/log4j.properties;\
+	spark-submit \
+			--conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file://$$logfile" \
+			--conf "spark.executor.extraJavaOptions=-Dlog4j.configuration=file://$$logfile" \
+			--class part_05.SparkModelRunner \
+			output/scala-spark-course-assembly-0.1.0.jar \
+			data/stocks_for_streaming data/stocks_model
+
 
 # Guard to check ENV vars
 guard-%:

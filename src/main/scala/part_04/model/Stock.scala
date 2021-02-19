@@ -9,5 +9,5 @@ case class Stock (
                   high:Double,
                   low:Double,
                   close:Double,
-                  volume:Int
+                  volume:BigInt
                 )

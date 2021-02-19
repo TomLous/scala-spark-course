@@ -10,11 +10,19 @@ lazy val root = (project in file("."))
 
 // Libraries
 val sparkVersion = "3.0.1"
+val slf4jVersion = "1.7.30"
 
 val sparkLibs = Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % Provided,
   "org.apache.spark" %% "spark-sql" % sparkVersion % Provided,
   "org.apache.spark" %% "spark-streaming" % sparkVersion % Provided,
+  "org.apache.spark" %% "spark-mllib" % sparkVersion % Provided
+).map(_.exclude("org.slf4j", "*"))
+
+val loggingLibs = Seq(
+  "org.slf4j" % "slf4j-api" % slf4jVersion % Provided,
+  "org.slf4j" % "jul-to-slf4j" % slf4jVersion % Provided,
+  "org.slf4j" % "slf4j-log4j12" % slf4jVersion % Provided
 )
 
 val testingLibs = Seq(
@@ -25,7 +33,7 @@ val testingLibs = Seq(
 lazy val commonSettings = Seq(
   organization := "xyz.graphiq",
   scalaVersion := "2.12.13",
-  libraryDependencies ++= sparkLibs ++ testingLibs,
+  libraryDependencies ++= sparkLibs ++ loggingLibs ++ testingLibs,
   scalacOptions ++= Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
     "-encoding",
@@ -49,7 +57,7 @@ lazy val testSettings = Seq(
 // Assembly options
 lazy val assemblySettings = Seq(
   assembly / assemblyOption := (assembly / assemblyOption).value.copy(includeScala = false),
-  assembly / assemblyOutputPath := baseDirectory.value / "../output" / (assembly / assemblyJarName).value,
+  assembly / assemblyOutputPath := baseDirectory.value / "output" / (assembly / assemblyJarName).value,
   assembly / assemblyMergeStrategy := {
     case PathList("META-INF", _ @_*) => MergeStrategy.discard
     case _ => MergeStrategy.first

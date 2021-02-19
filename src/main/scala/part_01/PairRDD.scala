@@ -23,7 +23,7 @@ object PairRDD extends App{
   val keyValueRDD:RDD[(String, Int)] = rdd.keyBy(n => if (n % 2 == 0) "even" else "odd")
 
   val keys:RDD[String] = keyValueRDD.keys.distinct
-  println("Num distinct keys: " + keys.collect().length)   // <- RDD action
+  println("Num distinct keys: " + keys.collect().length)   // <- RDDTest action
 
 
   halt
@@ -40,7 +40,7 @@ object PairRDD extends App{
     (lA: List[String], lB: List[String]) => lA ::: lB // mergeCombiners
   )
 
-  rddCombined.foreach(println) // <- RDD action
+  rddCombined.foreach(println) // <- RDDTest action
 
   halt
 

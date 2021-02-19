@@ -3,7 +3,7 @@ package part_01
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
-object RDD extends App {
+object RDDTest extends App {
 
   def halt():Unit = {
     println("> ")
@@ -13,7 +13,7 @@ object RDD extends App {
 
   val spark = SparkSession
     .builder()
-    .appName("RDD")
+    .appName("RDDTest")
     .config("spark.master", "local[*]")
     .getOrCreate()
 
