@@ -17,12 +17,13 @@ val sparkLibs = Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion % Provided,
   "org.apache.spark" %% "spark-streaming" % sparkVersion % Provided,
   "org.apache.spark" %% "spark-mllib" % sparkVersion % Provided
-).map(_.exclude("org.slf4j", "*"))
+)
 
 val loggingLibs = Seq(
   "org.slf4j" % "slf4j-api" % slf4jVersion % Provided,
   "org.slf4j" % "jul-to-slf4j" % slf4jVersion % Provided,
-  "org.slf4j" % "slf4j-log4j12" % slf4jVersion % Provided
+  "org.slf4j" % "slf4j-log4j12" % slf4jVersion % Provided,
+  "commons-logging" % "commons-logging" % "1.2"
 )
 
 val testingLibs = Seq(

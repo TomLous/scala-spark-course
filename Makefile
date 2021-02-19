@@ -58,7 +58,7 @@ run-trainer:
 
 
 .PHONY: run-predictor
-run-trainer:
+run-predictor:
 	@logfile=`pwd`/src/main/resources/log4j.properties;\
 	spark-submit \
 			--conf "spark.driver.extraJavaOptions=-Dlog4j.configuration=file://$$logfile" \
